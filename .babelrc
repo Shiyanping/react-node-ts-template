@@ -2,7 +2,7 @@
 //在。babelrc中编辑：
 {
   "presets": [
-      ["es2015", {"loose": true}],
-      "react"
+      ["@babel/preset-env"],
+      "@babel/preset-react"
   ]
 }

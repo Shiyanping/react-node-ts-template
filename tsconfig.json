@@ -2,8 +2,9 @@
     "compilerOptions": {
         "target": "es5",
         "lib": ["es6"],
-        "types": ["reflect-metadata"],
+        // "types": ["reflect-metadata"],
         "module": "commonjs",
+        "jsx": "react",
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
