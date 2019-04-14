@@ -10,10 +10,12 @@ module.exports = merge(webpackConfig, {
     port: '8022',
     host: 'localhost',
     proxy: {
-      '/api': 'http://127.0.0.1:8020'
+      '/api': {
+        target: 'http://127.0.0.1:3022',
+        pathRewrite: {"^/api": ""} // 将/api重写为""空字符串 
+      }
     },
     contentBase: path.join(__dirname, '../dist'), // boolean | string | array, static file location
-    // publicPath: '/',
     stats: {
       color: true
     },
@@ -22,7 +24,7 @@ module.exports = merge(webpackConfig, {
     hot: true, // hot module replacement. Depends on HotModuleReplacementPlugin
     // hotOnly: true,
     // inline: true,
-    https: false, // true for self-signed, object for cert authority
+    https: false // true for self-signed, object for cert authority
     // noInfo: true, // only errors & warns on hot reload
   },
   plugins: [
@@ -30,9 +32,7 @@ module.exports = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       title: 'CRM',
       filename: 'index.html',
-      template: '../src/web/index.html',
+      template: '../src/web/index.html'
     })
   ]
 });
-
-  

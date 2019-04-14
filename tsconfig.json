@@ -4,9 +4,11 @@
         "lib": ["es6"],
         "types": ["reflect-metadata"],
         "module": "commonjs",
+        "sourceMap": true,
         "jsx": "react",
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
     }
 }
+  

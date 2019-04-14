@@ -1,10 +1,11 @@
 import { InversifyKoaServer } from 'inversify-koa-utils';
-import { Container } from './ioc/ioc';
+import { Container, buildProviderModule } from './ioc/ioc';
+import './ioc/loader';
 
 const container = new Container();
 
 // load 所有资源
-container.load();
+container.load(buildProviderModule());
 
 const server = new InversifyKoaServer(container);
 
@@ -19,6 +20,6 @@ server
 const app = server.build();
 
 // 监听端口
-app.listen(3000, () => {
-  console.log('inversify启动成功');
+app.listen(3022, () => {
+  // console.log('inversify启动成功');
 });

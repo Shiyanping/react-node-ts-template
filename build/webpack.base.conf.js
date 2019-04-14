@@ -1,6 +1,4 @@
 const path = require('path'),
-  webpack = require('webpack'),
-  CopyWebpackPlugin = require('copy-webpack-plugin'),
   MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const _PROD_ = process.env.NODE_ENV === 'production';
@@ -16,7 +14,7 @@ module.exports = {
 
   output: {
     path: resolve('dist'), // string
-    publicPath: '', // root Dir
+    publicPath: '/', // root Dir
     sourceMapFilename: '[name].map',
     chunkFilename: 'static/js/[name].[chunkhash:8].js',
     filename: 'static/js/[name].[hash:8].js'
@@ -67,12 +65,6 @@ module.exports = {
   },
 
   resolve: {
-    // 解析模块请求的选项
-    // （不适用于对 loader 解析）
-    modules: ['node_modules', resolve('src')],
-    // 用于查找模块的目录
-    extensions: ['.js', '.ts', '.tsx'],
-
     alias: {
       '@assets': resolve('src/web/assets'),
       '@components': resolve('src/web/components'),
@@ -80,7 +72,12 @@ module.exports = {
       '@models': resolve('src/web/models'),
       '@pages': resolve('src/web/pages'),
       '@utils': resolve('src/web/utils')
-    }
+    },
+    // 解析模块请求的选项
+    // （不适用于对 loader 解析）
+    modules: ['node_modules', resolve('src')],
+    // 用于查找模块的目录
+    extensions: ['.js', '.ts', '.tsx'],
   },
 
   context: __dirname, // string（绝对路径！）
@@ -112,7 +109,7 @@ module.exports = {
       cacheGroups: {
         react: {
           name: 'vendor',
-          test: /[\\/]node_modules\/(react|mobx)[\\/]/,
+          test: /[\\/]node_modules\/(react|redux)[\\/]/,
           priority: 1,
           chunks: 'all'
         },

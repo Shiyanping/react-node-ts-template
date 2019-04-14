@@ -1,127 +1,64 @@
-import * as React from 'react'
-import { Row, Col, Button, Badge, Icon, Form, Input, Select } from 'antd';
+import * as React from 'react';
+import { Transfer, Switch } from 'antd';
 
-const FormItem = Form.Item
-const TextArea = Input.TextArea
-const Option = Select.Option
-
-const styles = {
-  block: {
-    marginBottom: '20px',
-    boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px',
-    padding: '10px'
-  },
-  flex: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  padding: {
-    padding: '10px 0'
-  }
+const mockData = [];
+for (let i = 0; i < 20; i++) {
+  mockData.push({
+    key: i.toString(),
+    title: `content${i + 1}`,
+    description: `description of content${i + 1}`,
+    disabled: i % 3 < 1
+  });
 }
 
-interface IProps{
-  demoStore?: any
-}
+const oriTargetKeys = mockData.filter(item => +item.key % 3 > 1).map(item => item.key);
 
-export default class Demo extends React.Component<IProps> {
+export default class Demo extends React.Component {
+  state = {
+    targetKeys: oriTargetKeys,
+    selectedKeys: [],
+    disabled: false
+  };
+  handleChange = (nextTargetKeys, direction, moveKeys) => {
+    this.setState({ targetKeys: nextTargetKeys });
 
-  componentDidMount() {
-    // console.log($http)
-    // console.log(this.props)
-  }
+    // console.log('targetKeys: ', nextTargetKeys);
+    // console.log('direction: ', direction);
+    // console.log('moveKeys: ', moveKeys);
+  };
 
-  render(){
-    const {demoStore: {
-      count, add, desc,
-      inputApi, methodChange, typeChange, inputParams, testApi,
-      apiUrl, apiMethod, apiType, apiParams, apiResult,
-      fileChange, upload, clearFile
-    }} = this.props
-    
-    return <div>
-      <section style={styles.block}>
-        <h3>mini测试</h3>
-        <Row style={styles.padding}>
-          <Col span={24}>
-            <Badge count={count} showZero={true}>
-            </Badge>
-            <Button onClick={desc}>
-              <Icon type="minus" />
-            </Button>
-            <Button onClick={add}>
-              <Icon type="plus" />
-            </Button>
-          </Col>
-        </Row>
-      </section>
-      
-      <section style={styles.block}>
-        <h3>接口测试</h3>
-        <Row style={styles.padding}>
-          <Col span={24}>
-            <Form>
-              <FormItem label="api" labelCol={{span: 4}} wrapperCol={{span: 20}}>
-                <Row gutter={8}>
-                  <Col span={12}>
-                    <Input placeholder="请输入url" onChange={e => inputApi(e.target.value)} value={apiUrl}/>
-                  </Col>
-                  {
-                    apiType === '/api' ?
-                    <Col span={3}>
-                      <Select value={apiMethod}
-                        onChange={methodChange}>
-                        <Option value="GET">GET</Option>
-                        <Option value="POST">POST</Option>
-                        <Option value="PUT">PUT</Option>
-                        <Option value="DELETE">DELETE</Option>
-                      </Select>
-                    </Col> : ''
-                  }
-                  <Col span={3}>
-                    <Select value={apiType}
-                      onChange={typeChange}>
-                      <Option value="/api">RESTful</Option>
-                      <Option value="/graphql">GraphQL</Option>
-                    </Select>
-                  </Col>
-                  <Col span={6}>
-                    <Button type="primary" onClick={testApi}>发送</Button>
-                  </Col>
-                </Row>
-              </FormItem>
-              <FormItem label="参数(json格式)" labelCol={{span: 4}} wrapperCol={{span: 12}}>
-                <TextArea rows={6} onChange={e => inputParams(e.target.value)} value={apiParams}/>
-              </FormItem>
-              <FormItem label="结果" labelCol={{span: 4}} wrapperCol={{span: 18}}>
-                <TextArea rows={24} value={apiResult}/>
-              </FormItem>
-            </Form>
-          </Col>
-        </Row>
-      </section>
+  handleSelectChange = (sourceSelectedKeys, targetSelectedKeys) => {
+    this.setState({ selectedKeys: [...sourceSelectedKeys, ...targetSelectedKeys] });
 
-      <section style={styles.block}>
-        <h3>文件上传</h3>
-        <Row style={styles.padding}>
-          <Col span={24}>
-            <Form>
-              <FormItem label="选择文件" labelCol={{span: 4}} wrapperCol={{span: 20}}>
-                <Row gutter={8}>
-                  <Col span={12}>
-                    <input type="file" placeholder="请选择文件" onChange={e => fileChange(e)}/>
-                  </Col>
-                  <Col span={6}>
-                    <Button type="primary" onClick={upload}>上传</Button>
-                    <Button onClick={fileChange}>清空</Button>
-                  </Col>
-                </Row>
-              </FormItem>
-            </Form>
-          </Col>
-        </Row>
-      </section>
-      
-    </div>
+    // console.log('sourceSelectedKeys: ', sourceSelectedKeys);
+    // console.log('targetSelectedKeys: ', targetSelectedKeys);
+  };
+
+  handleScroll = (direction, e) => {
+    // console.log('direction:', direction);
+    // console.log('target:', e.target);
+  };
+
+  handleDisable = disabled => {
+    this.setState({ disabled });
+  };
+  render() {
+    const { targetKeys, selectedKeys, disabled } = this.state;
+    return (
+      <div>
+        <Transfer
+          dataSource={mockData}
+          titles={['Source', 'Target']}
+          targetKeys={targetKeys}
+          selectedKeys={selectedKeys}
+          onChange={this.handleChange}
+          onSelectChange={this.handleSelectChange}
+          onScroll={this.handleScroll}
+          render={item => item.title}
+          disabled={disabled}
+        />
+        <Switch unCheckedChildren="disabled" checkedChildren="disabled" checked={disabled} onChange={this.handleDisable} style={{ marginTop: 16 }} />
+      </div>
+    );
   }
 }
