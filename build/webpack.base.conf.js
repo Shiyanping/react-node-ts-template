@@ -71,16 +71,15 @@ module.exports = {
     // （不适用于对 loader 解析）
     modules: ['node_modules', resolve('src')],
     // 用于查找模块的目录
-
     extensions: ['.js', '.ts', '.tsx'],
 
     alias: {
-      '@assets': resolve('src/assets'),
-      '@components': resolve('src/components'),
-      '@constants': resolve('src/constants'),
-      '@models': resolve('src/models'),
-      '@pages': resolve('src/pages'),
-      '@utils': resolve('src/utils')
+      '@assets': resolve('src/web/assets'),
+      '@components': resolve('src/web/components'),
+      '@constants': resolve('src/web/constants'),
+      '@models': resolve('src/web/models'),
+      '@pages': resolve('src/web/pages'),
+      '@utils': resolve('src/web/utils')
     }
   },
 
