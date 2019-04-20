@@ -1,22 +1,38 @@
 import * as React from 'react';
-import { Layout } from 'antd';
-import Routes from '../../routes';
 
-const { Content } = Layout;
+const STATUS = {
+  HOVERED: 'hovered',
+  NORMAL: 'normal'
+};
 
-class Home extends React.Component<any> {
+export default class Link extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this._onMouseEnter = this._onMouseEnter.bind(this);
+    this._onMouseLeave = this._onMouseLeave.bind(this);
+  }
+
+  state = {
+    class: STATUS.NORMAL
+  };
+
+  _onMouseEnter() {
+    this.setState({ class: STATUS.HOVERED });
+  }
+
+  _onMouseLeave() {
+    this.setState({ class: STATUS.NORMAL });
+  }
+
   render() {
-    // const { homeStore } = this.props;
     return (
-      <Layout>
-        <Layout>
-          <Content style={{ margin: '16px 12px', padding: 16, background: '#fff', minHeight: 520 }}>
-            {Routes(true)}
-          </Content>
-        </Layout>
-      </Layout>
+      <div>
+        <h1>hello world</h1>
+        <a className={this.state.class} href={this.props.page || '#'} onMouseEnter={this._onMouseEnter} onMouseLeave={this._onMouseLeave}>
+          {this.props.children}
+        </a>
+      </div>
     );
   }
 }
-
-export default Home;

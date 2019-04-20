@@ -2,13 +2,25 @@ const gulp = require('gulp');
 const babel = require('gulp-babel');
 const ts = require('gulp-typescript');
 const tsConfig = ts.createProject('./tsconfig.json');
+const gulpTslint = require('gulp-tslint');
+const tslint = require('tslint');
+const program = tslint.Linter.createProgram('./tsconfig.json');
 
 const entry = './src/server/**/*.ts';
 
-// 上线环境
 function buildprod() {
   return gulp
     .src(entry)
+    .pipe(
+      gulpTslint({
+        program
+      })
+    )
+    .pipe(
+      gulpTslint.report({
+        allowWarnings: true
+      })
+    )
     .pipe(tsConfig())
     .pipe(
       babel({

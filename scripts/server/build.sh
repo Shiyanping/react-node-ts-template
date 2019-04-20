@@ -1,2 +1,2 @@
 # gulp 上线环境
-gulp
+cross-env NODE_ENV=production gulp

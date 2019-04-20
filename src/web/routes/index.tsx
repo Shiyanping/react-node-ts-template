@@ -6,6 +6,7 @@ const {lazy, Suspense} = React
 
 const Demo = lazy(() => import( /* webpackChunkName:"demo" */ '../pages/demo/demo'))
 const Dashboard = lazy(() => import( /* webpackChunkName:"demo" */ '../pages/dashboard/dashboard'))
+const Todolist = lazy(() => import( /* webpackChunkName:"demo" */ '../pages/todolist/todolist'))
 
 
 export const routes: RouteProps[] = [
@@ -18,6 +19,11 @@ export const routes: RouteProps[] = [
     path: '/home/demos',
     exact: true,
     component: Demo
+  },
+  {
+    path: '/home/todolist',
+    exact: true,
+    component: Todolist
   }
 ]
 
