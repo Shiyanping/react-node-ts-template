@@ -1,29 +1,30 @@
 import * as React from 'react';
-import { Component, Fragment } from 'react';
+import { Input, Button, List } from 'antd';
+import store from '../../models';
 
-class Todolist extends Component<any> {
+class TodoList extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  state = {
-    inputValue: '',
-    list: []
-  };
+  state = store.getState();
 
   render() {
     return (
-      <Fragment>
+      <div>
         <div>
-          <input type="text" placeholder="请输入要添加的任务" onChange={this.handleChangeInput.bind(this)} defaultValue={this.state.inputValue} />
-          <button onClick={this.handleSubmit.bind(this)}>提交</button>
+          <Input
+            placeholder="请输入要添加的任务"
+            onChange={this.handleChangeInput.bind(this)}
+            style={{ width: '300px', margin: '15px' }}
+            value={this.state.inputValue}
+          />
+          <Button type="primary" onClick={this.handleSubmit.bind(this)}>
+            提交
+          </Button>
         </div>
-        <ul>
-          {this.state.list.map((item, index) => {
-            return <li key={index}>{item}</li>;
-          })}
-        </ul>
-      </Fragment>
+        <List bordered dataSource={this.state.list} renderItem={item => <List.Item>{item}</List.Item>} />
+      </div>
     );
   }
 
@@ -40,6 +41,50 @@ class Todolist extends Component<any> {
       list
     });
   }
+
+  handleRemoveItem(key) {
+    let list = [...this.state.list];
+    list.splice(key, 1);
+    this.setState({
+      list
+    });
+  }
 }
 
-export default Todolist;
+export default TodoList;
+
+// import * as React from 'react';
+// import { Component, Fragment } from 'react';
+
+// class Todolist extends Component<any> {
+//   constructor(props) {
+//     super(props);
+//   }
+
+//   state = {
+//     inputValue: '',
+//     list: []
+//   };
+
+//   render() {
+//     return (
+//       <Fragment>
+//         <div>
+//           <input type="text" placeholder="请输入要添加的任务" onChange={this.handleChangeInput.bind(this)} value={this.state.inputValue} />
+//           <button onClick={this.handleSubmit.bind(this)}>提交</button>
+//         </div>
+//         <ul>
+//           {this.state.list.map((item, index) => {
+//             return (
+//               <li key={index} onClick={this.handleRemoveItem.bind(this, index)}>
+//                 {item}
+//               </li>
+//             );
+//           })}
+//         </ul>
+//       </Fragment>
+//     );
+//   }
+// }
+
+// export default Todolist;
