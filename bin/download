@@ -1,0 +1,138 @@
+#!/usr/bin/env node
+//核心处理命令行
+const program = require("commander");
+//终端颜色打印
+const chalk = require("chalk");
+//渐变色的版本号
+const Printer = require("@darkobits/lolcatjs");
+//loading状态
+const ora = require("ora");
+//和用户交互
+//prompts
+const inquirer = require("inquirer");
+//给用户的系统进行交互
+const shelljs = require("shelljs");
+//获取用户的根节点 然后默认我们创建在用户的桌面
+const userHome = require("user-home");
+console.log(userHome)
+//引入项目根库
+const download = require("download-git-repo");
+//这里是我们辛辛苦苦写好的构建项目
+const template = "direct:https://github.com/Shiyanping/react-node-ts-template.git";
+//当前cli的版本号
+const _version = require("../package").version;
+const input = [
+  "   ---------------+--------------- ",
+  "          ___ /^^[___              _",
+  "         /|^+----+   |#___________/ /",
+  "       ( -+ |____|   _______-----+/",
+  "        ==_________--'             ",
+  "          ~_|___|__ -♚ syp♚ " + _version + "",
+  "         "
+].join("\n");
+//命令行处理函数
+const binHandler = {
+  init() {
+    console.log("进入初始化节点...");
+    inquirer
+      .prompt([
+        {
+          type: "text",
+          message: "1️⃣ 请输入文件夹名称",
+          name: "dirname"
+        },
+        {
+          type: "list",
+          message: "2️⃣ 请选择使用语言",
+          choices: ["✔ TypeScript", "✔ EcmaScript6"],
+          name: "jskind"
+        }
+      ])
+      .then(answers => {
+        // console.log("xxxx", answers.dirname);
+        // console.log("xxxx", answers.jskind);
+        const _dirname = answers.dirname;
+        if (_dirname) {
+          const spinner = ora("👩‍💻downloading template...");
+          spinner.start();
+          //项目的全路径 每次清除
+          const _projectPath = `${userHome}/Desktop/${_dirname}`;
+          shelljs.cd(`${userHome}/Desktop/`);
+          shelljs.rm("-rf", _projectPath);
+          shelljs.mkdir(_dirname);
+          download(template, _projectPath, { clone: true }, err => {
+            spinner.stop();
+            if (err) {
+              console.error(
+                "Failed to download repo " +
+                  template +
+                  ": " +
+                  err.message.trim()
+              );
+            } else {
+              //用linux shell sed把package.json的包名换掉
+              shelljs.sed(
+                "-i",
+                "yd-vue-kernel",
+                _dirname,
+                _projectPath + "/package.json"
+              );
+              console.log(chalk.green("👩‍🚒项目创建成功enjoy development~"));
+            }
+          });
+        }
+      })
+      .catch(function(error) {
+        console.log(chalk.red("🤷‍ yd-cli启动异常", error));
+      });
+    // setTimeout(function(){
+    //     spinner.stop();
+    // },2000);
+  },
+  build() {
+    console.log("启动编译");
+  },
+  test() {
+    console.log("启动测试");
+  }
+};
+//设置用户的版本编号【特殊处理】
+program.version(Printer.default.fromString(input), "-v, --version");
+program.option("-i, --init", "设置相应🐈");
+program
+  .usage("[cmd] <options>")
+  //init 和int不一样哦 后面不带空格的话需要指定yd-test 拆分组件逻辑
+  .arguments("<cmd> [env]")
+  .action(function(cmd, otherParams) {
+    const handler = binHandler[cmd];
+    // console.log(cmd);
+    if (typeof handler === "undefined") {
+      console.error(
+        chalk.yellow("🙏 非常遗憾") +
+          "【" +
+          chalk.red(cmd) +
+          " 】" +
+          chalk.yellow("暂未提供~")
+      );
+      process.exit(1);
+    } else {
+      handler(otherParams);
+    }
+  });
+//系统自带的Commands
+//   program
+//     //init 和int不一样哦 后面不带空格的话需要指定yd-test 拆分组件逻辑
+//     .command("init ", "初始化项目")
+//     .command("test ", "执行项目测试")
+//     .command("build ", "构建项目🌰");
+const start = "  ";
+program.on("--help", function() {
+  console.log("");
+  console.log("Commands:");
+  console.log(chalk.green(`${start}init -i       👨‍🍳 初始化项目`));
+  console.log(chalk.yellow(`${start}build -b      📦 编译项目`));
+  console.log(chalk.blue(`${start}test -t       🚧 测试项目`));
+  console.log("");
+});
+program.parse(process.argv);
+if (program.init) console.log(program.init);

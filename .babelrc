@@ -3,7 +3,7 @@
     [
       "@babel/preset-env",
       {
-        "targets": { "ie": 9 },
+        "targets": { "chrome": 74 },
         "ignoreBrowserslistConfig": true,
         "useBuiltIns": false,
         "modules": false,

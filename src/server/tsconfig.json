@@ -6,9 +6,8 @@
     },
     "globals": {},
     "compilerOptions": {
-        "types": ["reflect-metadata","node"],
-        "jsx": "react",
         "module": "commonjs",
+        // "types": ["node"],
         "target": "es5",
         "lib": [
             "es6",

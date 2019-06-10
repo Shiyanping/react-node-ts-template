@@ -1,16 +1,31 @@
-// 对外提供一个容器
-import { Container, inject } from 'inversify';
-import { controller, interfaces, httpGet, TYPE } from 'inversify-koa-utils';
-import { provide, fluentProvide, buildProviderModule } from 'inversify-binding-decorators';
-import * as Router from 'koa-router';
-// 导入 service 的别名
-import TAGS from '../constant/TAGS';
-// import TYPES from '../constant/types';
-
-// 流式的 provide
+import {
+  fluentProvide,
+  provide,
+  buildProviderModule
+} from "inversify-binding-decorators";
+import * as Router from "koa-router";
+import TAGS from "../constant/tags";
+import { Container, injectable, inject } from "inversify";
+import { interfaces, TYPE, controller, httpGet } from "inversify-koa-utils";
 let provideThrowable = function(identifier, name) {
   return fluentProvide(identifier)
     .whenTargetNamed(name)
     .done();
 };
-export { Container, inject, controller, interfaces, httpGet, Router, TAGS, TYPE, provide, provideThrowable, buildProviderModule };
+// container
+//   .bind<interfaces.Controller>(TYPE.Controller)
+//   .to(IndexController)
+//   .whenTargetNamed("IndexController");
+export {
+  Router,
+  TAGS,
+  interfaces,
+  TYPE,
+  controller,
+  httpGet,
+  inject,
+  provideThrowable,
+  buildProviderModule,
+  provide,
+  Container
+};

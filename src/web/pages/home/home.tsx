@@ -1,19 +1,24 @@
-import * as React from 'react';
-import { Layout } from 'antd';
-import Routes from '../../routes';
 
-const { Content } = Layout;
+// import * as React from 'react';
 
-class Home extends React.Component {
-  render() {
-    return (
-      <Layout>
-        <Layout>
-          <Content style={{ margin: '16px 12px', padding: 16, background: '#fff', minHeight: 520 }}>{Routes(true)}</Content>
-        </Layout>
-      </Layout>
-    );
-  }
-}
-
-export default Home;
+// export default class home extends React.Component {
+//   render() {
+//     const { targetKeys, selectedKeys, disabled } = this.state;
+//     return (
+//       <div>
+//         <Transfer
+//           dataSource={mockData}
+//           titles={['Source', 'Target']}
+//           targetKeys={targetKeys}
+//           selectedKeys={selectedKeys}
+//           onChange={this.handleChange}
+//           onSelectChange={this.handleSelectChange}
+//           onScroll={this.handleScroll}
+//           render={item => item.title}
+//           disabled={disabled}
+//         />
+//         <Switch unCheckedChildren="disabled" checkedChildren="disabled" checked={disabled} onChange={this.handleDisable} style={{ marginTop: 16 }} />
+//       </div>
+//     );
+//   }
+// }

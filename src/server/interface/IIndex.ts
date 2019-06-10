@@ -1,5 +1,4 @@
-import { Model } from '../models/User';
-
-export interface IIndex {
+import { Model } from "../model/User";
+export interface IIdex {
   getUser(id: string): Model.User;
 }

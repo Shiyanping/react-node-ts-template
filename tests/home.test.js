@@ -1,24 +1,36 @@
-// Link.react.test.js
-const React = require('react');
-const Link = require('../src/web/pages/home/home');
-const renderer = require('react-test-renderer');
+import React from 'react'
+import {
+  render,
+  cleanup,
+  fireEvent
+} from 'react-testing-library'
+import 'jest-dom/extend-expect'
+import { App } from './index'
 
-test('Link changes the class when hovered', () => {
-  const component = renderer.create(
-    <Link page="http://www.baidu.com">Baidu</Link>,
-  );
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+afterEach(cleanup)
 
-  // manually trigger the callback
-  tree.props.onMouseEnter();
-  // re-rendering
-  tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+describe(`test the app component`, () => {
+  it(`should render a list with 2 items by default`, () => {
+    const { getByTestId } = render(<App />)
+    const [ul, footer] = [
+      getByTestId('todoList'),
+      getByTestId('footer')
+    ]
 
-  // manually trigger the callback
-  tree.props.onMouseLeave();
-  // re-rendering
-  tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
-});
+    expect(ul.children.length).toBe(2)
+    expect(footer.textContent).toContain('1 / 2')
+  })
+
+  it(`should change footer text on toggle of list item`, () => {
+    const { getByTestId } = render(<App />)
+    const [ul, footer] = [
+      getByTestId('todoList'),
+      getByTestId('footer')
+    ]
+
+    fireEvent.click(ul.firstChild)
+    expect(footer.textContent).toContain('2 / 2')
+    fireEvent.click(ul.children[1])
+    expect(footer.textContent).toContain('1 / 2')
+  })
+})

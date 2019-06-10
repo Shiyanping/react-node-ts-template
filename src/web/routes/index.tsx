@@ -1,42 +1,51 @@
-import * as React from 'react'
-import { Route, Switch, Redirect, RouteProps } from 'react-router-dom';
-import Loading from '../components/loading'
+import * as React from "react";
+import { Route, Switch, RouteProps } from "react-router-dom";
+import Loading from "@components/loading";
+import Home from "@components/home";
+const { lazy, Suspense } = React;
 
-const {lazy, Suspense} = React
-
-const Demo = lazy(() => import( /* webpackChunkName:"demo" */ '../pages/demo/demo'))
-const Dashboard = lazy(() => import( /* webpackChunkName:"demo" */ '../pages/dashboard/dashboard'))
-const Todolist = lazy(() => import( /* webpackChunkName:"demo" */ '../pages/todolist/todolist'))
-
+const Demo = lazy(() =>
+  import(/* webpackChunkName:"demo" */ "@components/demo")
+);
+const Login = lazy(() =>
+  import(/* webpackChunkName:"login" */ "@components/login")
+);
 
 export const routes: RouteProps[] = [
   {
-    path: '/home',
+    path: "/",
     exact: true,
-    component: Dashboard
+    component: Home
   },
   {
-    path: '/home/demos',
+    path: "/login",
+    exact: true,
+    component: Login
+  },
+  {
+    path: "/demos",
     exact: true,
     component: Demo
-  },
-  {
-    path: '/home/todolist',
-    exact: true,
-    component: Todolist
   }
-]
+];
 
-const Routes = (authorized: boolean) => <Suspense fallback={<Loading/>}>
-  <Switch>
-  {
-    routes.map(r => {
-      const {path, exact, component} = r
-      const LazyCom = component
-      return <Route key={path + ''} exact={exact} path={path} render={(props: any) => (authorized ? <LazyCom {...props}/> : <Redirect to="/login"/>)}/>
-    })
-  }
-  </Switch>
-</Suspense>
+const Routes = () => (
+  <Suspense fallback={<Loading />}>
+    <Switch>
+      {routes.map(r => {
+        const { path, exact, component } = r;
+        const LazyCom = component;
+        return (
+          <Route
+            key={path + ""}
+            exact={exact}
+            path={path}
+            render={() => <LazyCom />}
+          />
+        );
+      })}
+    </Switch>
+  </Suspense>
+);
 
-export default Routes
+export default Routes;

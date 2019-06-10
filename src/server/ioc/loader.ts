@@ -1,3 +1,5 @@
-// 主动加载 controller 和 service
-import '../controllers/IndexController';
-import '../services/IndexService';
+import '../controller/IndexController';
+import '../controller/ApiController';
+import '../service/IndexService';
+import '../service/ApiService';
+import '../util/SafeRequest';
